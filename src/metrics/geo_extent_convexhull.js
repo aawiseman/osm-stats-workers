@@ -5,8 +5,8 @@ var turf = require('turf');
 module.exports = function (changeset) {
   // Explode OSM features to points
   var points = [];
-  changeset.elements.forEach(function(el) {
-    if (el.type && el.type == 'node') {
+  changeset.elements.forEach(function (el) {
+    if (el.type && el.type === 'node') {
       points.push({
         'type': 'Feature',
         'geometry': {
@@ -16,7 +16,7 @@ module.exports = function (changeset) {
         'properties': {}
       });
     } else if (el.nodes) {
-      el.nodes.forEach(function(n) {
+      el.nodes.forEach(function (n) {
         points.push({
           'type': 'Feature',
           'geometry': {
@@ -24,13 +24,13 @@ module.exports = function (changeset) {
             'coordinates': [n.lon, n.lat]
           },
           'properties': {}
-        })
+        });
       });
     }
   });
 
   // Return as point (if 1), linestring (if 2 or 3) or polygon (4+)
-  if (points.length == 1) {
+  if (points.length === 1) {
     return {
       'type': 'Feature',
       'geometry': {
@@ -38,10 +38,10 @@ module.exports = function (changeset) {
         'coordinates': points[0].geometry.coordinates
       },
       'properties': {}
-    }
+    };
   } else if (points.length < 4) {
     var ls = points.map(function (point) {
-      return point.geometry.coordinates
+      return point.geometry.coordinates;
     });
     return {
       'type': 'Feature',
@@ -50,13 +50,13 @@ module.exports = function (changeset) {
         'coordinates': ls
       },
       'properties': {}
-    }
+    };
   } else {
     // calculate convex hull
     var convexHull = turf.convex({
       'type': 'FeatureCollection',
-      'features': points,
+      'features': points
     });
-    return convexHull;    
+    return convexHull;
   }
 };

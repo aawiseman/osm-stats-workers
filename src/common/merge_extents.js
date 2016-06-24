@@ -8,9 +8,9 @@ module.exports = function (extent1, extent2) {
     extent2 = JSON.parse(extent2);
   }
   try {
-    if (extent1.geometry.type == 'GeometryCollection') {
-        // legacy user geometry, won't happen with fresh database
-        return extent2;
+    if (extent1.geometry.type === 'GeometryCollection') {
+      // legacy user geometry, won't happen with fresh database
+      return extent2;
     }
     return turf.merge({
       'type': 'FeatureCollection',
